@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-
 extern const uint16_t battery30[];
 extern const uint16_t battery40[];
 extern const uint16_t bluetooth30[];

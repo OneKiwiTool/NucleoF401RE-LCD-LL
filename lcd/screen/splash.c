@@ -1,11 +1,13 @@
 #include "screen.h"
+#include "color.h"
+#include "main.h"
 
 void screen_splash(void)
 {
     ST7789_Init();
-    ST7789_Fill_Color(WHITE);
+    ST7789_SetRotation(2);
+    ST7789_FillScreen(COLOR_WHITE);
     LL_mDelay(200);
-#if 1
 
     ST7789_DrawImage(25, 111, 120, 96, skua0);
     LL_mDelay(200);
@@ -27,5 +29,4 @@ void screen_splash(void)
     LL_mDelay(200);
     ST7789_DrawImage(25, 111, 120, 96, skua9);
     LL_mDelay(1000);
-#endif
 }

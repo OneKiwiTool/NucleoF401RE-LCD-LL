@@ -1,5 +1,6 @@
 #include "main.h"
 #include "board.h"
+#include "st7789.h"
 #include "screen.h"
 #include <stdio.h>
 
@@ -9,8 +10,6 @@ uint8_t render = 0;
 int main(void)
 {
     board_init();
-    //printf("\nStart Program!\n");
-
     screen_splash();
     screen_home();
 
