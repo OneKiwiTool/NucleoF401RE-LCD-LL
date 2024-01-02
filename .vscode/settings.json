@@ -5,6 +5,8 @@
         "string_view": "c",
         "screen.h": "c",
         "st7789.h": "c",
-        "image.h": "c"
+        "image.h": "c",
+        "stdint.h": "c",
+        "random": "c"
     }
 }

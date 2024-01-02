@@ -1,34 +1,65 @@
 #include "screen.h"
 #include "color.h"
 #include "main.h"
+#include "status.h"
+#include <stdio.h>
+
+extern Screen_Status status;
 
 void screen_home(void)
 {
 	ST7789_FillScreen(COLOR_WHITE);
-    screen_home_top("Home", "100", 1);
-    screen_home_level(3);
-    screen_home_speed("78");
-    screen_home_uint("km/h");
-    screen_home_battery("100%", COLOR_GRAY);
-    screen_home_deep(">10m", COLOR_GRAY);
+    screen_home_top();
+    screen_home_level();
+    screen_home_speed();
+    screen_home_uint();
+    screen_home_battery();
+    screen_home_deep();
 }
 
-void screen_home_top(char *title, char *bat, uint8_t blue)
-{
+void screen_home_top(void)
+{   
+    char buffer[4];
     ST7789_FillRectangle(0, 0, 171, 47, COLOR_GRAY);
 
-    if(blue > 0){
+    if(status.top.iconBluetooth){
+        // bluetooth connected
         ST7789_DrawImage(5, 8, 30, 30, bluetooth30);
+    } else {
+        // bluetooth disconnect
+        ST7789_DrawImage(5, 8, 30, 30, bluetooth30r);
     }
-    ST7789_WriteString(80, 10, bat, &Ubuntu24B, COLOR_GRAY, COLOR_BLACK);
-    ST7789_DrawImage(135, 8, 30, 30, battery30);
-    
+
+    sprintf(buffer, "%d", status.top.bateryPercent);
+    if (status.top.bateryPercent >= 50)
+    {
+        if(status.top.bateryPercent < 100){
+            ST7789_WriteString(90, 10, buffer, &Inter26, COLOR_GRAY, COLOR_BLACK);
+        }else {
+            ST7789_WriteString(65, 10, buffer, &Inter26, COLOR_GRAY, COLOR_BLACK);
+        }
+        ST7789_DrawImage(135, 8, 30, 30, battery30);
+    } else if (status.top.bateryPercent < 20)
+    {
+        ST7789_WriteString(90, 10, buffer, &Inter26, COLOR_GRAY, COLOR_RED);
+        ST7789_DrawImage(135, 8, 30, 30, battery30r);
+    } else {
+        ST7789_WriteString(90, 10, buffer, &Inter26, COLOR_GRAY, COLOR_ORANGE);
+        ST7789_DrawImage(135, 8, 30, 30, battery30o);
+    }
 }
 
-void screen_home_level(uint8_t level)
+void screen_home_level(void)
 {
-    switch (level)
+    switch (status.home.level)
     {
+    case 0:
+        ST7789_FillRectangle(6, 60, 26, 6, COLOR_GRAY);
+        ST7789_FillRectangle(38, 60, 26, 6, COLOR_GRAY);
+        ST7789_FillRectangle(70, 60, 26, 6, COLOR_GRAY);
+        ST7789_FillRectangle(102, 60, 26, 6, COLOR_GRAY);
+        ST7789_FillRectangle(134, 60, 26, 6, COLOR_GRAY);
+        break;
     case 1:
         ST7789_FillRectangle(6, 60, 26, 6, COLOR_BLACK);
         ST7789_FillRectangle(38, 60, 26, 6, COLOR_GRAY);
@@ -36,7 +67,6 @@ void screen_home_level(uint8_t level)
         ST7789_FillRectangle(102, 60, 26, 6, COLOR_GRAY);
         ST7789_FillRectangle(134, 60, 26, 6, COLOR_GRAY);
         break;
-    
     case 2:
         ST7789_FillRectangle(6, 60, 26, 6, COLOR_BLACK);
         ST7789_FillRectangle(38, 60, 26, 6, COLOR_BLACK);
@@ -68,37 +98,140 @@ void screen_home_level(uint8_t level)
     }
 }
 
-void screen_home_speed(char *speed)
+void screen_home_speed(void)
 {
-    ST7789_WriteString(22, 70, speed, &Ubuntu100B, COLOR_WHITE, COLOR_BLACK);
+    uint8_t a0 = status.home.speed%10;
+    uint8_t a1 = status.home.speed/10;
+    switch (a0)
+    {
+    case 0:
+        ST7789_DrawImage(96, 75, 56, 106, num0);
+        break;
+    case 1:
+        ST7789_DrawImage(96, 75, 56, 106, num1);
+        break;
+    case 2:
+        ST7789_DrawImage(96, 75, 56, 106, num2);
+        break;
+    case 3:
+        ST7789_DrawImage(96, 75, 56, 106, num3);
+        break;
+    case 4:
+        ST7789_DrawImage(96, 75, 56, 106, num4);
+        break;
+    case 5:
+        ST7789_DrawImage(96, 75, 56, 106, num5);
+        break;
+    case 6:
+        ST7789_DrawImage(96, 75, 56, 106, num6);
+        break;
+    case 7:
+        ST7789_DrawImage(96, 75, 56, 106, num7);
+        break;
+    case 8:
+        ST7789_DrawImage(96, 75, 56, 106, num8);
+        break;
+    case 9:
+        ST7789_DrawImage(96, 75, 56, 106, num9);
+        break;
+    }
+
+    switch (a1)
+    {
+    case 0:
+        ST7789_DrawImage(20, 75, 56, 106, num0);
+        break;
+    case 1:
+        ST7789_DrawImage(20, 75, 56, 106, num1);
+        break;
+    case 2:
+        ST7789_DrawImage(20, 75, 56, 106, num2);
+        break;
+    case 3:
+        ST7789_DrawImage(20, 75, 56, 106, num3);
+        break;
+    case 4:
+        ST7789_DrawImage(20, 75, 56, 106, num4);
+        break;
+    case 5:
+        ST7789_DrawImage(20, 75, 56, 106, num5);
+        break;
+    case 6:
+        ST7789_DrawImage(20, 75, 56, 106, num6);
+        break;
+    case 7:
+        ST7789_DrawImage(20, 75, 56, 106, num7);
+        break;
+    case 8:
+        ST7789_DrawImage(20, 75, 56, 106, num8);
+        break;
+    case 9:
+        ST7789_DrawImage(20, 75, 56, 106, num9);
+        break;
+    }
 }
 
-void screen_home_uint(char *unit)
+void screen_home_uint(void)
 {
-    ST7789_WriteString(52, 190, unit, &Ubuntu24B, COLOR_WHITE, COLOR_BLACK);
+    if (status.home.uint)
+    {
+        ST7789_WriteString(52, 190, "kph", &Ubuntu24B, COLOR_WHITE, COLOR_BLACK);
+    } else
+    {
+        ST7789_WriteString(52, 190, "km/h", &Ubuntu24B, COLOR_WHITE, COLOR_BLACK);
+    }
 }
 
-void screen_home_battery(char *bat, uint16_t color)
+void screen_home_battery(void)
 {
-    ST7789_FillRoundRect(3, 220, 166, 42, 8, color);
-    //ST7789_FillRectangle(3, 220, 166, 42, color);
-    ST7789_DrawImage(5, 221, 40, 40, battery40);
-    ST7789_WriteString(82, 229, bat, &Ubuntu24B, color, COLOR_BLACK);
+    char buffer[4];
+    sprintf(buffer, "%d%%", status.home.batery);
+    if (status.home.batery > 50){
+        ST7789_FillRoundRect(3, 220, 166, 42, 8, COLOR_GRAY);
+        ST7789_DrawImage(10, 221, 40, 40, battery40);
+        if(status.home.batery < 100){
+            ST7789_WriteString(85, 226, buffer, &Inter26, COLOR_GRAY, COLOR_BLACK);
+        }else {
+            ST7789_WriteString(60, 226, buffer, &Inter26, COLOR_GRAY, COLOR_BLACK);
+        }
+    } else if (status.home.batery < 20){
+        ST7789_FillRoundRect(3, 220, 166, 42, 8, COLOR_RED);
+        ST7789_DrawImage(10, 221, 40, 40, battery40r);
+        ST7789_WriteString(85, 226, buffer, &Inter26, COLOR_RED, COLOR_WHITE);
+    } else {
+        ST7789_FillRoundRect(3, 220, 166, 42, 8, COLOR_ORANGE);
+        ST7789_DrawImage(10, 221, 40, 40, battery40o);
+        ST7789_WriteString(85, 226, buffer, &Inter26, COLOR_ORANGE, COLOR_WHITE);
+    }
 }
 
-void screen_home_deep(char *met, uint16_t color)
+void screen_home_deep(void)
 {
-    ST7789_FillRoundRect(3, 270, 166, 42, 8, color);
-    //ST7789_FillRectangle(3, 270, 166, 42, color);
-    ST7789_DrawImage(5, 271, 40, 40, deep40);
-    ST7789_WriteString(82, 279, met, &Ubuntu24B, color, COLOR_BLACK);
+    char buffer[6];
+    uint8_t a0 = status.home.deep%10;
+    uint8_t a1 = status.home.deep/10;
+    sprintf(buffer, "%d.%dm", a1, a0);
+
+    if (status.home.deep > 20){
+        ST7789_FillRoundRect(3, 270, 166, 42, 8, COLOR_GRAY);
+        ST7789_DrawImage(10, 271, 40, 40, deep40);
+        ST7789_WriteString(60, 276, buffer, &Inter26, COLOR_GRAY, COLOR_BLACK);
+    } else if (status.home.deep < 15){
+        ST7789_FillRoundRect(3, 270, 166, 42, 8, COLOR_RED);
+        ST7789_DrawImage(10, 271, 40, 40, deep40r);
+        ST7789_WriteString(60, 276, buffer, &Inter26, COLOR_RED, COLOR_WHITE);
+    } else {
+        ST7789_FillRoundRect(3, 270, 166, 42, 8, COLOR_ORANGE);
+        ST7789_DrawImage(10, 271, 40, 40, deep40o);
+        ST7789_WriteString(60, 276, buffer, &Inter26, COLOR_ORANGE, COLOR_WHITE);
+    }
 }
 
 ///////////
 void screen_setting(void)
 {
     ST7789_FillScreen(COLOR_WHITE);
-    screen_home_top("Setting", "98", 1);
+    screen_home_top();
     screen_setting_pair(1);
     screen_setting_unit(0, "Unit: Km/h");
     screen_setting_system(0);
@@ -180,7 +313,7 @@ void screen_setting_bottom(uint8_t select)
 void screen_pair(void)
 {
     ST7789_FillScreen(COLOR_WHITE);
-    screen_home_top("Pair", "98", 1);
+    screen_home_top();
     screen_pair_device1(1, "Skua 1");
     screen_pair_device2(0, "Skua 2");
     screen_setting_bottom(3);
@@ -214,7 +347,7 @@ void screen_pair_device2(uint8_t select, char *text)
 void screen_info(void)
 {
     ST7789_FillScreen(COLOR_WHITE);
-    screen_home_top("Info", "88", 1);
+    screen_home_top();
     ST7789_WriteString(5, 60, "ID", &Font24, COLOR_WHITE, COLOR_BLACK);
     ST7789_WriteString(5, 85, "000 000000", &Font16, COLOR_WHITE, COLOR_BLACK);
     ST7789_WriteString(5, 110, "Version", &Font24, COLOR_WHITE, COLOR_BLACK);
@@ -227,7 +360,7 @@ void screen_info(void)
 void screen_pairing(void)
 {
     ST7789_FillScreen(COLOR_WHITE);
-    screen_home_top("Pairing", "88", 0);
+    screen_home_top();
     screen_setting_bottom(5);
     for(uint8_t i = 0; i <10; i++){
         ST7789_DrawImage(37, 111, 98, 98, loading000);
@@ -245,7 +378,7 @@ void screen_pairing(void)
 void screen_paired(void)
 {
     ST7789_FillScreen(COLOR_WHITE);
-    screen_home_top("Pairing", "88", 1);
+    screen_home_top();
     ST7789_DrawImage(47, 121, 78, 78, done78);
     screen_setting_bottom(6);
 }

@@ -89,6 +89,8 @@ extern sFONT Ubuntu20B;
 extern sFONT Ubuntu24B;
 extern sFONT Ubuntu100B;
 
+extern sFONT Inter26;
+
 extern cFONT Font12CN;
 extern cFONT Font24CN;
 #ifdef __cplusplus

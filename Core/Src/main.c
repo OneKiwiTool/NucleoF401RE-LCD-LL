@@ -1,6 +1,6 @@
 #include "main.h"
 #include "board.h"
-#include "st7789.h"
+#include "status.h"
 #include "screen.h"
 #include <stdio.h>
 
@@ -10,22 +10,33 @@ uint8_t render = 0;
 int main(void)
 {
     board_init();
+    
+    screen_status_init();
+
     screen_splash();
     screen_home();
 
     LL_mDelay(2000);
-    screen_setting();
+    test_home_status1();
+    screen_home();
 
     LL_mDelay(2000);
-    screen_pair();
+    test_home_status2();
+    screen_home();
 
-    LL_mDelay(2000);
-    screen_info();
+    //LL_mDelay(2000);
+    //screen_setting();
 
-    LL_mDelay(2000);
-    screen_pairing();
+    //LL_mDelay(2000);
+    //screen_pair();
 
-    screen_paired();
+    //LL_mDelay(2000);
+    //screen_info();
+
+    //LL_mDelay(2000);
+    //screen_pairing();
+
+    //screen_paired();
 
     while (1)
     {
