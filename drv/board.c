@@ -61,6 +61,7 @@ void SystemClock_Config(void)
     LL_Init1msTick(84000000);
     LL_SetSystemCoreClock(84000000);
     LL_RCC_SetTIMPrescaler(LL_RCC_TIM_PRESCALER_TWICE);
+    LL_SYSTICK_EnableIT();
 }
 
 static void MX_SPI1_Init(void)
@@ -230,6 +231,9 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    NVIC_SetPriority(EXTI15_10_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+    NVIC_EnableIRQ(EXTI15_10_IRQn);
 }
 
 void Error_Handler(void)

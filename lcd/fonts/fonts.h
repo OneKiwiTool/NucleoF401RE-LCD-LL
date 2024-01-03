@@ -82,17 +82,18 @@ typedef struct
 extern sFONT Font24;
 extern sFONT Font20;
 extern sFONT Font16;
-extern sFONT Font12;
-extern sFONT Font8;
+//extern sFONT Font12;
+//extern sFONT Font8;
 
 extern sFONT Ubuntu20B;
 extern sFONT Ubuntu24B;
 extern sFONT Ubuntu100B;
 
+extern sFONT Inter24;
 extern sFONT Inter26;
 
-extern cFONT Font12CN;
-extern cFONT Font24CN;
+//extern cFONT Font12CN;
+//extern cFONT Font24CN;
 #ifdef __cplusplus
 }
 #endif

@@ -17,10 +17,10 @@ void screen_home_battery(void);
 void screen_home_deep(void);
 
 void screen_setting(void);
-void screen_setting_pair(uint8_t select);
-void screen_setting_unit(uint8_t select, char *unit);
-void screen_setting_bottom(uint8_t select);
-void screen_setting_system(uint8_t select);
+void screen_setting_pair(void);
+void screen_setting_unit(void);
+void screen_setting_bottom(void);
+void screen_setting_system(void);
 
 void screen_pair(void);
 void screen_pair_device1(uint8_t select, char *text);
